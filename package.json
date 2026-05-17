@@ -2,11 +2,14 @@
   "name": "ponto-2-integrations-bridge",
   "version": "0.1.0",
   "private": true,
+  "description": "Backend bridge para integrações externas (Canva OAuth)",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node src/server.js",
+    "generate:consent": "node scripts/generate-canva-consent-urls.mjs",
+    "test": "node --test"
   },
   "dependencies": {
-    "express": "^4.18.3"
+    "express": "^4.19.2"
   }
 }

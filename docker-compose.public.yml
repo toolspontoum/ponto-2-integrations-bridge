@@ -1,0 +1,22 @@
+services:
+  canva-oauth-bridge:
+    build: .
+    container_name: canva-oauth-bridge
+    restart: unless-stopped
+    env_file:
+      - .env.public
+    environment:
+      - PORT=3000
+      - PUBLIC_BASE_URL=https://panel.pontoenterprise.com.br
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.canva-oauth-bridge.rule=Host(`panel.pontoenterprise.com.br`) && PathPrefix(`/api/canva/oauth`)"
+      - "traefik.http.routers.canva-oauth-bridge.entrypoints=websecure"
+      - "traefik.http.routers.canva-oauth-bridge.tls=true"
+      - "traefik.http.services.canva-oauth-bridge.loadbalancer.server.port=3000"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
