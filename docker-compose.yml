@@ -1,0 +1,26 @@
+services:
+  p2-integrations-bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: p2-integrations-bridge
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    networks:
+      - paperclip_enterprise
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=paperclip-enterprise_default"
+      - "traefik.http.routers.p2-integrations-bridge.rule=Host(`panel.pontoenterprise.com.br`) && PathPrefix(`/api/canva/oauth`)"
+      - "traefik.http.routers.p2-integrations-bridge.entrypoints=websecure"
+      - "traefik.http.routers.p2-integrations-bridge.tls=true"
+      - "traefik.http.routers.p2-integrations-bridge.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.p2-integrations-bridge.priority=2000"
+      - "traefik.http.services.p2-integrations-bridge.loadbalancer.server.port=3000"
+
+networks:
+  paperclip_enterprise:
+    external: true
+    name: paperclip-enterprise_default
