@@ -47,6 +47,22 @@ test('callback returns 400 when code/state missing', async () => {
   }
 });
 
+test('callback returns oauth_error when provider returns error params', async () => {
+  const { server, baseUrl } = await startApp();
+  try {
+    const res = await fetch(
+      `${baseUrl}/api/canva/oauth/dev/callback?error=invalid_scope&error_description=requested_scope_not_allowed`
+    );
+    assert.equal(res.status, 400);
+    const body = await res.json();
+    assert.equal(body.error, 'oauth_error');
+    assert.equal(body.oauth_error, 'invalid_scope');
+    assert.equal(Object.hasOwn(body, 'oauth_error_description'), false);
+  } finally {
+    server.close();
+  }
+});
+
 test('callback returns 403 when state invalid', async () => {
   process.env.CANVA_OAUTH_STATE_DEV = 'expected-state';
 
@@ -134,6 +150,7 @@ test('authorize returns URL with state and PKCE challenge derived from verifier'
     assert.equal(authUrl.searchParams.get('state'), 'state-dev');
     assert.equal(authUrl.searchParams.get('code_challenge_method'), 'S256');
     assert.ok(authUrl.searchParams.get('code_challenge'));
+    assert.equal(authUrl.searchParams.get('scope'), 'profile:read');
   } finally {
     server.close();
   }

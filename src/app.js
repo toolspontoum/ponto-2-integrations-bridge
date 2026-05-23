@@ -26,6 +26,26 @@ async function oauthCallbackHandler(req, res) {
     return res.status(404).json({ error: 'route_not_found' });
   }
 
+  const oauthError = typeof req.query.error === 'string' ? req.query.error : '';
+  const oauthErrorDescription = typeof req.query.error_description === 'string'
+    ? req.query.error_description
+    : '';
+
+  if (oauthError) {
+    logStructured('error', 'canva_callback_oauth_error', {
+      environment,
+      endpoint: req.path,
+      status_code: 400,
+      request_id: requestId,
+      oauth_error: oauthError,
+      oauth_error_description: oauthErrorDescription.slice(0, 200)
+    });
+    return res.status(400).json({
+      error: 'oauth_error',
+      oauth_error: oauthError
+    });
+  }
+
   const code = typeof req.query.code === 'string' ? req.query.code : '';
   const state = typeof req.query.state === 'string' ? req.query.state : '';
 

@@ -4,21 +4,7 @@ function readEnv(name) {
   return (process.env[name] || '').trim();
 }
 
-const REQUIRED_SCOPES = [
-  'asset:read',
-  'asset:write',
-  'brandtemplate:content:read',
-  'brandtemplate:meta:read',
-  'comment:read',
-  'comment:write',
-  'design:content:read',
-  'design:content:write',
-  'design:meta:read',
-  'design:meta:write',
-  'folder:read',
-  'folder:write',
-  'profile:read'
-];
+const REQUIRED_SCOPES = ['profile:read'];
 
 const ENV_CONFIG = {
   dev: { envName: 'DEV', callbackPath: '/api/canva/oauth/dev/callback' },
