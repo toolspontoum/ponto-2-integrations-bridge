@@ -15,15 +15,15 @@ const ENV_CONFIG = {
 function getClientConfig(env) {
   if (env === 'dev') {
     return {
-      clientId: readEnv('CANVA_CLIENT_ID_DEV') || readEnv('CANVA_CLIENT_ID_NONPROD'),
-      clientSecret: readEnv('CANVA_CLIENT_SECRET_DEV') || readEnv('CANVA_CLIENT_SECRET_NONPROD')
+      clientId: readEnv('CANVA_CLIENT_ID_NONPROD') || readEnv('CANVA_CLIENT_ID_DEV'),
+      clientSecret: readEnv('CANVA_CLIENT_SECRET_NONPROD') || readEnv('CANVA_CLIENT_SECRET_DEV')
     };
   }
 
   if (env === 'stage') {
     return {
-      clientId: readEnv('CANVA_CLIENT_ID_STAGE') || readEnv('CANVA_CLIENT_ID_NONPROD'),
-      clientSecret: readEnv('CANVA_CLIENT_SECRET_STAGE') || readEnv('CANVA_CLIENT_SECRET_NONPROD')
+      clientId: readEnv('CANVA_CLIENT_ID_NONPROD') || readEnv('CANVA_CLIENT_ID_STAGE'),
+      clientSecret: readEnv('CANVA_CLIENT_SECRET_NONPROD') || readEnv('CANVA_CLIENT_SECRET_STAGE')
     };
   }
 
